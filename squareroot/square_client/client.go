@@ -44,13 +44,15 @@ func doErrorCall(c squarepb.SquareRootServiceClient, n int32) {
 		respErr, ok := status.FromError(err)
 		if ok {
 			// actual error from gRPC (user error)
-			fmt.Println(respErr.Message())
+			fmt.Printf("Error message from server: %v\n", respErr.Message())
 			fmt.Println(respErr.Code())
 			if respErr.Code() == codes.InvalidArgument {
 				fmt.Println("We probably sent a negative number!")
+				return
 			}
 		} else {
 			log.Fatalf("Big error calling SquareRoot: %v", err)
+			return
 		}
 	}
 	fmt.Printf("Result of square root of %v: %.4f\n\n", n, res.GetNumberRoot())
